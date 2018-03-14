@@ -1,0 +1,31 @@
+{
+  "name": "audio-player",
+  "version": "1.0.0",
+  "description": "An OOP-style audio player plugin.",
+  "main": "src/audio-player.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adammy/audio-player.git"
+  },
+  "keywords": [
+    "audio",
+    "player",
+    "audio"
+  ],
+  "author": "Adam MacDonald-Corrao <adammacdonaldcorrao@gmail.com> (http://adammy.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adammy/audio-player/issues"
+  },
+  "homepage": "https://github.com/adammy/audio-player#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}
