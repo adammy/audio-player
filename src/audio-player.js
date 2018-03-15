@@ -51,15 +51,15 @@
 		};
 
 		// init dom elements
-		this.init();
+		this.render();
 
 	};
 
 	/*
-	 * create dom elements, append to dom, and add event listeners
+	 * renders dom elements and adds event listeners
 	 * @public
 	 */
-	Player.prototype.init = function () {
+	Player.prototype.render = function () {
 
 		// create dom elements
 		this.audio = document.createElement('audio');
@@ -73,6 +73,7 @@
 
 			// create dom element and add text, classes, properties
 			var songItem = document.createElement('li');
+			if (i === 0) songItem.className = 'active';
 
 			var title = document.createElement('div');
 			title.className = 'title';
@@ -82,19 +83,15 @@
 			artist.className = 'artist';
 			artist.textContent = this.songs[i].artist;
 
-			// add chilren dom elements for each song
+			// add children dom elements for each song
 			songItem.appendChild(title);
 			songItem.appendChild(artist);
 
 			// apply props for use in event handler
 			songItem.index = i;
-			songItem.self = this;
 
-			// event listener
-			songItem.addEventListener('click', handleSongClick, {
-				once: true,
-				capture: true
-			});
+			// event handler
+			songItem.addEventListener('click', this.changeSong.bind(this));
 
 			// add song item to list
 			this.songList.appendChild(songItem);
@@ -118,75 +115,58 @@
 		if (this.settings.autoplay) this.audio.play();
 
 		// for use in private event handler functions (referenced as event.target.self)
-		this.prevBtn.self = this;
-		this.playBtn.self = this;
-		this.nextBtn.self = this;
+		this.prevBtn.action = 'prev';
+		this.nextBtn.action = 'next';
 
-		// addEventHandlers
-		this.prevBtn.addEventListener('click', handlePrevClick);
-		this.playBtn.addEventListener('click', handlePlayClick);
-		this.nextBtn.addEventListener('click', handleNextClick);
-
-		// other methods
-		this.setActive(0);
+		// event handlers
+		this.prevBtn.addEventListener('click', this.changeSong.bind(this));
+		this.playBtn.addEventListener('click', this.play.bind(this));
+		this.nextBtn.addEventListener('click', this.changeSong.bind(this));
 
 	}
 
 	/*
-	 * play audio clip
+	 * play current song
 	 * @public
 	 */
 	Player.prototype.play = function () {
-		this.playBtn.textContent = 'Pause';
-		this.audio.play();
-	}
+		this.state.playing ? this.audio.pause() : this.audio.play();
+		this.playBtn.textContent = this.state.playing ? 'Play' : 'Pause';
+		this.state.playing = !this.state.playing;
+	};
 
 	/*
-	 * pause audio clip
+	 * changes current song
 	 * @public
+	 * @param {Event} e - event should come with action or index property to determine necessary steps
 	 */
-	Player.prototype.pause = function () {
-		this.playBtn.textContent = 'Play';
-		this.audio.pause();
-	}
+	Player.prototype.changeSong = function (e) {
 
-	/*
-	 * go to the prev song in this.songs
-	 * @public
-	 */
-	Player.prototype.prev = function () {
-		var newIndex = ((this.state.index - 1) < 0) ? (this.songs.length - 1) : (this.state.index - 1);
-		this.audio.src = this.songs[newIndex].file;
-		this.state.index = newIndex;
-		this.setActive(newIndex);
-		this.state.playing = true;
-		this.play();
-	}
+		// set a new index for song chosen
+		var newIndex;
+		var action = e.currentTarget.action || e.currentTarget.index;
+		if (action === 'prev') {
+			newIndex = ((this.state.index - 1) < 0) ? (this.songs.length - 1) : (this.state.index - 1);
+		} else if (action === 'next') {
+			newIndex = ((this.state.index + 1) < this.songs.length) ? (this.state.index + 1) : 0;
+		} else if (typeof action === 'number' && action <= this.songs.length) {
+			newIndex = action;
+		} else {
+			return new Error('The changeSong() method was run without an appropriate action property on the event param.');
+		}
 
-	/*
-	 * go to the next song in this.songs
-	 * @public
-	 */
-	Player.prototype.next = function () {
-		var newIndex = ((this.state.index + 1) < this.songs.length) ? (this.state.index + 1) : 0;
-		this.audio.src = this.songs[newIndex].file;
-		this.state.index = newIndex;
-		this.setActive(newIndex);
-		this.state.playing = true;
-		this.play();
-	}
-
-	/*
-	 * set the active song/index
-	 * @public
-	 */
-	Player.prototype.setActive = function (index) {
+		// set dom active
 		var songItems = this.songList.children;
 		for (var i = 0; i < songItems.length; i++) {
-			if (i === index) songItems[i].className = 'active';
+			if (i === newIndex) songItems[i].className = 'active';
 			else songItems[i].className = '';
 		}
-	}
+
+		this.audio.src = this.songs[newIndex].file;
+		this.state.index = newIndex;
+		this.state.playing = false;
+		this.play();
+	};
 
 	/*
 	 * given two objects, will seek to overwrite first object with anything provided in the second object
@@ -203,51 +183,6 @@
 			}
 		}
 		return source;
-	}
-
-	/*
-	 * event handler function for clicking play/pause btn
-	 * @private
-	 * @param {Event} e
-	 */
-	function handlePlayClick(e) {
-		var player = e.target.self;
-		player.state.playing ? player.pause() : player.play();
-		player.state.playing = !player.state.playing;
-	}
-
-	/*
-	 * event handler function for clicking a song list item
-	 * @private
-	 * @param {Event} e
-	 */
-	function handleSongClick(e) {
-		var player = e.target.self;
-		player.audio.src = player.songs[e.target.index].file;
-		player.state.index = e.target.index;
-		player.setActive(e.target.index);
-		player.state.playing = true;
-		player.play();
-	}
-
-	/*
-	 * event handler function for clicking prev btn
-	 * @private
-	 * @param {Event} e
-	 */
-	function handlePrevClick(e) {
-		var player = e.target.self;
-		player.prev();
-	}
-
-	/*
-	 * event handler function for clicking next btn
-	 * @private
-	 * @param {Event} e
-	 */
-	function handleNextClick(e) {
-		var player = e.target.self;
-		player.next();
 	}
 
 }());
