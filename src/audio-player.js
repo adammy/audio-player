@@ -46,7 +46,7 @@
 		];
 		this.settings = extendDefaults(defaults, settings);
 		this.state = {
-			playing: this.settings.autoplay,
+			playing: !this.settings.autoplay,
 			index: 0
 		};
 
@@ -101,7 +101,6 @@
 		// add necessary attributes
 		this.audio.src = this.songs[0].file;
 		this.prevBtn.textContent = 'Prev';
-		this.playBtn.textContent = (this.settings.autoplay) ? 'Pause' : 'Play';
 		this.nextBtn.textContent = 'Next';
 
 		// insert into dom
@@ -110,9 +109,6 @@
 		this.container.appendChild(this.prevBtn);
 		this.container.appendChild(this.playBtn);
 		this.container.appendChild(this.nextBtn);
-
-		// conditions affecting behavior
-		if (this.settings.autoplay) this.audio.play();
 
 		// for use in private event handler functions (referenced as event.target.self)
 		this.prevBtn.action = 'prev';
@@ -123,6 +119,8 @@
 		this.playBtn.addEventListener('click', this.play.bind(this));
 		this.nextBtn.addEventListener('click', this.changeSong.bind(this));
 
+		this.play();
+
 	}
 
 	/*
@@ -131,7 +129,7 @@
 	 */
 	Player.prototype.play = function () {
 		this.state.playing ? this.audio.pause() : this.audio.play();
-		this.playBtn.textContent = this.state.playing ? 'Play' : 'Pause';
+		this.playBtn.innerHTML = this.state.playing ? 'Play' : 'Pause'; // play : pause
 		this.state.playing = !this.state.playing;
 	};
 
