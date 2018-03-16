@@ -11,8 +11,8 @@
 		// default settings
 		var defaults = {
 			autoplay: false,
-			fullScreenBtn: true,
-			times: true
+			displayFullScreenBtn: true,
+			displayTimes: true
 		};
 
 		// props
@@ -56,7 +56,7 @@
 		this.toolbar.appendChild(this.playBtn);
 
 		// full screen button
-		if (this.settings.fullScreenBtn) {
+		if (this.settings.displayFullScreenBtn) {
 			this.fullScreenBtn = document.createElement('button');
 			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
 			this.fullScreenBtn.textContent = 'Full Screen';
@@ -65,20 +65,27 @@
 		}
 
 		// time elapsed / duration
-		if (this.settings.times) {
+		if (this.settings.displayTimes) {
+
+			// container for all time-related elements
+			this.timeContainer = document.createElement('span');
+			this.timeContainer.className = 'cinema-times';
 
 			// elasped time init
 			this.elapsedTimeSpan = document.createElement('span');
 			this.elapsedTimeSpan.textContent = '0:00';
-			this.toolbar.appendChild(this.elapsedTimeSpan);
+			this.timeContainer.appendChild(this.elapsedTimeSpan);
 
 			// separator
 			this.timeSeparatorSpan = document.createElement('span');
 			this.timeSeparatorSpan.textContent = ' / ';
-			this.toolbar.appendChild(this.timeSeparatorSpan);
+			this.timeContainer.appendChild(this.timeSeparatorSpan);
 
 			// get duration when ready
 			this.media.addEventListener('durationchange', this.renderDuration.bind(this));
+
+			// place overall element in toolbar
+			this.toolbar.appendChild(this.timeContainer);
 
 		}
 
@@ -121,7 +128,7 @@
 	Cinema.prototype.renderDuration = function () {
 		this.durationSpan = document.createElement('span');
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
-		this.toolbar.appendChild(this.durationSpan);
+		this.timeContainer.appendChild(this.durationSpan);
 	};
 
 	/*
