@@ -10,7 +10,8 @@
 
 		// default settings
 		var defaults = {
-			autoplay: false
+			autoplay: false,
+			fullScreenBtn: true
 		};
 
 		// props
@@ -32,30 +33,34 @@
 	 */
 	Cinema.prototype.render = function () {
 
-		// create dom elements
-		this.container = document.createElement('div');
-		this.toolbar = document.createElement('div');
-		this.playBtn = document.createElement('button');
-		this.fullScreenBtn = document.createElement('button');
-
-		// add classes & props
+		// media file
 		this.media.className = 'cinema-media';
-		this.container.className = 'cinema-container';
-		this.toolbar.className = 'cinema-toolbar';
-		this.playBtn.className = 'cinema-btn cinema-btn-play';
-		this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
-		this.fullScreenBtn.textContent = 'Full Screen';
 
-		// insert into dom
+		// container
+		this.container = document.createElement('div');
+		this.container.className = 'cinema-container';
 		this.media.parentNode.insertBefore(this.container, this.media.nextSibling);
 		this.container.appendChild(this.media);
-		this.container.appendChild(this.toolbar);
-		this.toolbar.appendChild(this.playBtn);
-		this.toolbar.appendChild(this.fullScreenBtn);
 
-		// event handlers
+		// toolbar
+		this.toolbar = document.createElement('div');
+		this.toolbar.className = 'cinema-toolbar';
+		this.container.appendChild(this.toolbar);
+
+		// play button
+		this.playBtn = document.createElement('button');
+		this.playBtn.className = 'cinema-btn cinema-btn-play';
 		this.playBtn.addEventListener('click', this.play.bind(this));
-		this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
+		this.toolbar.appendChild(this.playBtn);
+
+		// full screen button
+		if (this.settings.fullScreenBtn) {
+			this.fullScreenBtn = document.createElement('button');
+			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
+			this.fullScreenBtn.textContent = 'Full Screen';
+			this.toolbar.appendChild(this.fullScreenBtn);
+			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
+		}
 
 		// state initialization and autoplay if defined
 		this.play();
