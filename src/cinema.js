@@ -11,8 +11,11 @@
 		// default settings
 		var defaults = {
 			autoplay: false,
-			displayFullScreenBtn: true,
-			displayTimes: true
+			display: {
+				fullScreenBtn: true,
+				times: true,
+				progressBar: true
+			}
 		};
 
 		// props
@@ -56,7 +59,7 @@
 		this.toolbar.appendChild(this.playBtn);
 
 		// full screen button
-		if (this.settings.displayFullScreenBtn) {
+		if (this.settings.display.fullScreenBtn) {
 			this.fullScreenBtn = document.createElement('button');
 			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
 			this.fullScreenBtn.textContent = 'Full Screen';
@@ -65,7 +68,7 @@
 		}
 
 		// time elapsed / duration
-		if (this.settings.displayTimes) {
+		if (this.settings.display.times) {
 
 			// container for all time-related elements
 			this.timeContainer = document.createElement('span');
