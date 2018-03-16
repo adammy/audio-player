@@ -73,11 +73,13 @@
 
 			// elasped time init
 			this.elapsedTimeSpan = document.createElement('span');
+			this.elapsedTimeSpan.className = 'cinema-times-elasped';
 			this.elapsedTimeSpan.textContent = '0:00';
 			this.timeContainer.appendChild(this.elapsedTimeSpan);
 
 			// separator
 			this.timeSeparatorSpan = document.createElement('span');
+			this.timeSeparatorSpan.className = 'cinema-times-separator';
 			this.timeSeparatorSpan.textContent = ' / ';
 			this.timeContainer.appendChild(this.timeSeparatorSpan);
 
@@ -127,6 +129,7 @@
 	 */
 	Cinema.prototype.renderDuration = function () {
 		this.durationSpan = document.createElement('span');
+		this.durationSpan.className = 'cinema-times-duration';
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
 		this.timeContainer.appendChild(this.durationSpan);
 	};
