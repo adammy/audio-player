@@ -119,7 +119,7 @@
 	};
 
 	/*
-	 * update time dom element
+	 * renders the elasped time dom element
 	 * @public
 	 */
 	Cinema.prototype.renderTime = function () {
@@ -127,7 +127,7 @@
 	};
 
 	/*
-	 * renders the duration time dom elements
+	 * renders the duration time dom element
 	 * @public
 	 */
 	Cinema.prototype.renderDuration = function () {
