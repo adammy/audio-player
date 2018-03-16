@@ -11,7 +11,8 @@
 		// default settings
 		var defaults = {
 			autoplay: false,
-			fullScreenBtn: true
+			fullScreenBtn: true,
+			times: true
 		};
 
 		// props
@@ -35,6 +36,7 @@
 
 		// media file
 		this.media.className = 'cinema-media';
+		this.media.addEventListener('timeupdate', this.timeUpdate.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -62,6 +64,24 @@
 			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
 		}
 
+		// time elapsed / duration
+		if (this.settings.times) {
+
+			// elasped time init
+			this.elapsedTimeSpan = document.createElement('span');
+			this.elapsedTimeSpan.textContent = '0:00';
+			this.toolbar.appendChild(this.elapsedTimeSpan);
+
+			// separator
+			this.timeSeparatorSpan = document.createElement('span');
+			this.timeSeparatorSpan.textContent = ' / ';
+			this.toolbar.appendChild(this.timeSeparatorSpan);
+
+			// get duration when ready
+			this.media.addEventListener('durationchange', this.renderDuration.bind(this));
+
+		}
+
 		// state initialization and autoplay if defined
 		this.play();
 
@@ -87,11 +107,45 @@
 	};
 
 	/*
+	 * update time dom element
+	 * @public
+	 */
+	Cinema.prototype.timeUpdate = function () {
+		this.elapsedTimeSpan.textContent = secondsToString(this.media.currentTime);
+	};
+
+	/*
+	 * renders the duration time dom elements
+	 * @public
+	 */
+	Cinema.prototype.renderDuration = function () {
+		this.durationSpan = document.createElement('span');
+		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
+		this.toolbar.appendChild(this.durationSpan);
+	};
+
+	/*
+	 * takes a number of seconds and converts it into a user-friendly string, e.g. 0:42 or 2:38
+	 * @private
+	 * @param {Number} seconds
+	 * @returns {String}
+	 */
+	function secondsToString(seconds) {
+		var secondsInt = parseInt(seconds);
+		var minutes = Math.floor(secondsInt / 60);
+		var leftoverSeconds = secondsInt % 60;
+		if (leftoverSeconds < 10) {
+			leftoverSeconds = '0' + leftoverSeconds;
+		}
+		return minutes + ':' + leftoverSeconds;
+	};
+
+	/*
 	 * given two objects, will seek to overwrite first object with anything provided in the second object
 	 * alternative to Object.assign() which doesn't work in IE apparently
 	 * @private
 	 * @param {Object} source - source object to be modified
-	 * @param {Object} updates - object with updated values
+	 * @param {Object} properties - object with updated values
 	 * @returns {Object}
 	 */
 	function extendDefaults(source, properties) {
