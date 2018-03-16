@@ -3,31 +3,30 @@ body {
   font-size: 15px;
   font-family: 'Roboto', Helvetica, Arial, sans-serif; }
 
-#audio-container {
-  background: #333;
+.cinema-container {
+  position: relative;
+  overflow: hidden; }
+
+.cinema-media {
+  width: 100%;
+  display: block; }
+
+.cinema-toolbar {
+  background: #000;
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0; }
+
+.cinema-btn {
+  background: transparent;
   color: #fff;
-  border: 1px solid #444;
-  margin: 4em auto 0;
-  max-width: 400px; }
-  #audio-container ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    max-height: 400px;
-    overflow: scroll; }
-    #audio-container ul li {
-      border-bottom: 1px solid #444;
-      padding: 0.75em 1.5em;
-      cursor: pointer; }
-      #audio-container ul li.active {
-        background: #2a4; }
-        #audio-container ul li.active .artist {
-          color: #fff; }
-      #audio-container ul li .title {
-        font-weight: 700; }
-      #audio-container ul li .artist {
-        color: #ccc;
-        font-size: 0.75em; }
-  #audio-container button {
-    background: transparent;
-    color: #fff; }
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: 0.2s all ease; }
+  .cinema-btn:hover {
+    background: rgba(0, 0, 0, 0.3); }
+  .cinema-btn:focus, .cinema-btn:active {
+    outline: none; }

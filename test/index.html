@@ -9,16 +9,16 @@
 </head>
 <body>
 
-	<div id="audio-container"></div>
-
-	<img src="icons/play.svg" alt="" width="100">
+	<div style="width: 800px; margin: 4em auto;">
+		<video id="video">
+			<source src="video/oceans.mp4" type="video/mp4">
+		</video>
+	</div>
 
 	<script src="cinema.js"></script>
 	<script>
-		var container = document.getElementById('audio-container');
-		var player = new Player(container, {
-			autoplay: false
-		});
+		var video = document.getElementById('video');
+		var cinema = new Cinema(video);
 	</script>
 
 </body>
