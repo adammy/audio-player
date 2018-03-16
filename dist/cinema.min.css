@@ -1,11 +1,13 @@
-body {
-  background: #191919;
-  font-size: 15px;
-  font-family: 'Roboto', Helvetica, Arial, sans-serif; }
-
 .cinema-container {
   position: relative;
   overflow: hidden; }
+  .cinema-container.cinema-fullscreen {
+    background: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
 
 .cinema-media {
   width: 100%;
@@ -27,6 +29,7 @@ body {
   cursor: pointer;
   transition: 0.2s all ease; }
   .cinema-btn:hover {
-    background: rgba(0, 0, 0, 0.3); }
+    background: rgba(0, 0, 0, 0.3);
+    background: #f00; }
   .cinema-btn:focus, .cinema-btn:active {
     outline: none; }
