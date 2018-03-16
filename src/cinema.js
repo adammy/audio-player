@@ -39,7 +39,7 @@
 
 		// media file
 		this.media.className = 'cinema-media';
-		this.media.addEventListener('timeupdate', this.timeUpdate.bind(this));
+		this.media.addEventListener('timeupdate', this.renderTime.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -122,7 +122,7 @@
 	 * update time dom element
 	 * @public
 	 */
-	Cinema.prototype.timeUpdate = function () {
+	Cinema.prototype.renderTime = function () {
 		this.elapsedTimeSpan.textContent = secondsToString(this.media.currentTime);
 	};
 
