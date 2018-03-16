@@ -1,14 +1,14 @@
 {
-  "name": "audio-player",
+  "name": "cinema-js",
   "version": "1.0.0",
-  "description": "An OOP-style audio player plugin.",
-  "main": "src/audio-player.js",
+  "description": "Create customized video/audio player interfaces.",
+  "main": "src/cinema.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adammy/audio-player.git"
+    "url": "git+https://github.com/adammy/cinema-js.git"
   },
   "keywords": [
     "audio",
@@ -18,9 +18,9 @@
   "author": "Adam MacDonald-Corrao <adammacdonaldcorrao@gmail.com> (http://adammy.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/adammy/audio-player/issues"
+    "url": "https://github.com/adammy/cinema-js/issues"
   },
-  "homepage": "https://github.com/adammy/audio-player#readme",
+  "homepage": "https://github.com/adammy/cinema-js#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-connect": "^5.5.0",
