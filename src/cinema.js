@@ -15,6 +15,9 @@
 				fullScreenBtn: true,
 				times: true,
 				progressBar: true
+			},
+			animate: {
+				toolbar: true
 			}
 		};
 
@@ -47,12 +50,17 @@
 		this.container.className = 'cinema-container';
 		this.media.parentNode.insertBefore(this.container, this.media.nextSibling);
 		this.container.appendChild(this.media);
-		this.container.addEventListener('mouseover', this.mediaMouseoverRender.bind(this));
-		this.container.addEventListener('mouseout', this.mediaMouseoutRender.bind(this));
+		if (this.settings.animate.toolbar) {
+			this.container.addEventListener('mouseover', this.mediaMouseoverRender.bind(this));
+			this.container.addEventListener('mouseout', this.mediaMouseoutRender.bind(this));
+		}
 
 		// toolbar
 		this.toolbar = document.createElement('div');
 		this.toolbar.className = 'cinema-toolbar';
+		if (!this.settings.animate.toolbar) {
+			this.toolbar.classList.add('cinema-toolbar-active');
+		}
 		this.container.appendChild(this.toolbar);
 
 		// left toolbar
