@@ -19,7 +19,8 @@
 				volumeBar: true
 			},
 			animate: {
-				toolbar: true
+				toolbar: true,
+				volumeBar: true
 			}
 		};
 
@@ -136,8 +137,10 @@
 
 			this.volumeContainer = document.createElement('div');
 			this.volumeContainer.className = 'cinema-volume-container';
-			this.volumeContainer.addEventListener('mouseover', this.volumeMouseoverRender.bind(this));
-			this.volumeContainer.addEventListener('mouseout', this.volumeMouseoutRender.bind(this));
+			if (this.settings.animate.volumeBar) {
+				this.volumeContainer.addEventListener('mouseover', this.volumeMouseoverRender.bind(this));
+				this.volumeContainer.addEventListener('mouseout', this.volumeMouseoutRender.bind(this));
+			}
 			this.rightToolbar.appendChild(this.volumeContainer);
 
 			this.volumeBtn = document.createElement('button');
@@ -149,6 +152,9 @@
 
 			this.volumeRangeContainer = document.createElement('span');
 			this.volumeRangeContainer.className = 'cinema-volume-range';
+			if (!this.settings.animate.volumeBar) {
+				this.volumeRangeContainer.classList.add('cinema-volume-range-active');
+			}
 			this.volumeRange = document.createElement('input');
 			this.volumeRange.type = 'range';
 			this.volumeRange.max = 1;
