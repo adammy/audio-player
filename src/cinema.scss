@@ -28,7 +28,7 @@
 		opacity: 0;
 		transition: 0.2s all ease;
 		&-active {
-			bottom: 5px;
+			bottom: 8px;
 			opacity: 1;
 		}
 		&-left {
@@ -63,22 +63,26 @@
 	}
 	&-progress-bar {
 		&-container {
-			background: #ccc;
-			height: 5px;
+			background: #ddd;
+			height: 8px;
+			position: relative;
+			z-index: 10;
+		}
+		&-buffer {
+			background: #bbb;
+			height: 8px;
+			width: 0;
+			display: block;
+			transition: 0.2s all ease;
+			position: absolute;
 		}
 		&-inner {
 			background: #f00;
-			height: 5px;
-			display: block;
+			height: 8px;
 			width: 0;
-			transition: 0.2s all ease;
-		}
-		&-buffer {
-			background: #aaa;
-			height: 5px;
 			display: block;
-			width: 0;
 			transition: 0.2s all ease;
+			position: absolute;
 		}
 	}
 	&-times {

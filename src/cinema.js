@@ -14,7 +14,8 @@
 			display: {
 				fullScreenBtn: true,
 				times: true,
-				progressBar: true
+				progressBar: true,
+				volumeBar: true
 			},
 			animate: {
 				toolbar: true
@@ -44,6 +45,7 @@
 		this.media.className = 'cinema-media';
 		this.media.addEventListener('timeupdate', this.playingRender.bind(this));
 		this.media.addEventListener('ended', this.mediaEndRender.bind(this));
+		this.media.addEventListener('progress', this.progressRender.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -122,13 +124,21 @@
 
 		// progress bar
 		if (this.settings.display.progressBar) {
+
 			this.progressBarContainer = document.createElement('div');
 			this.progressBarContainer.className = 'cinema-progress-bar-container';
-			this.progressBarInner = document.createElement('span');
-			this.progressBarInner.className = 'cinema-progress-bar-inner';
-			this.progressBarContainer.appendChild(this.progressBarInner);
 			this.progressBarContainer.addEventListener('click', this.progressBarInnerRender.bind(this));
 			this.container.appendChild(this.progressBarContainer);
+
+			this.progressBarInner = document.createElement('span');
+			this.progressBarInner.className = 'cinema-progress-bar-inner';
+
+			this.progressBarBuffer = document.createElement('span');
+			this.progressBarBuffer.className = 'cinema-progress-bar-buffer';
+
+			this.progressBarContainer.appendChild(this.progressBarBuffer);
+			this.progressBarContainer.appendChild(this.progressBarInner);
+
 		}
 
 		// state initialization and autoplay if defined
@@ -215,6 +225,20 @@
 		// time elapsed string
 		this.elapsedTimeSpan.textContent = secondsToString(this.media.currentTime);
 
+	};
+
+	/*
+	 * renders the buffered time dom element
+	 * @public
+	 */
+	Cinema.prototype.progressRender = function () {
+		var m = this.media;
+		for (var i = 0; i < m.buffered.length; i++) {
+			if (m.buffered.start(m.buffered.length - 1 - i) < m.currentTime) {
+				this.progressBarBuffer.style.width = (m.buffered.end(m.buffered.length - 1 - i) / m.duration) * 100 + '%';
+				break;
+			}
+		}
 	};
 
 	/*
