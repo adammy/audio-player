@@ -102,6 +102,7 @@
 			this.progressBarInner = document.createElement('span');
 			this.progressBarInner.className = 'cinema-progress-bar-inner';
 			this.progressBarContainer.appendChild(this.progressBarInner);
+			this.progressBarContainer.addEventListener('click', this.progressBarInnerRender.bind(this));
 			this.container.appendChild(this.progressBarContainer);
 		}
 
@@ -182,6 +183,15 @@
 		this.durationSpan.className = 'cinema-times-duration';
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
 		this.timeContainer.appendChild(this.durationSpan);
+	};
+
+	/*
+	 * renders the inner progress bar element
+	 * @public
+	 * @Param {Event}
+	 */
+	Cinema.prototype.progressBarInnerRender = function (e) {
+		this.media.currentTime = (e.offsetX / this.progressBarContainer.clientWidth) * this.media.duration;
 	};
 
 	/*
