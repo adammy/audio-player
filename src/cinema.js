@@ -3,7 +3,7 @@
 	/*
 	 * constructor
 	 * @public
-	 * @param {Element} container - parent dom element for audio player
+	 * @param {Element} media - the media element that is being manipulated
 	 * @param {Object} settings - object to overwrite default settings
 	 */
 	this.Cinema = function (media, settings) {
@@ -36,7 +36,8 @@
 	};
 
 	/*
-	 * renders dom elements and adds event listeners
+	 * renders the full video plugin
+	 * basically an initializer
 	 * @public
 	 */
 	Cinema.prototype.render = function () {
@@ -46,7 +47,7 @@
 		this.media.addEventListener('click', this.playPause.bind(this));
 		this.media.addEventListener('timeupdate', this.playingRender.bind(this));
 		this.media.addEventListener('ended', this.mediaEndRender.bind(this));
-		this.media.addEventListener('progress', this.progressRender.bind(this));
+		this.media.addEventListener('progress', this.bufferRender.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -79,20 +80,19 @@
 		// play button
 		this.playBtn = document.createElement('button');
 		this.playBtn.className = 'cinema-btn cinema-btn-play';
+		this.playBtn.addEventListener('click', this.playPause.bind(this));
 		this.playBtnImg = document.createElement('img');
 		this.playBtn.appendChild(this.playBtnImg);
-		this.playBtn.addEventListener('click', this.playPause.bind(this));
 		this.leftToolbar.appendChild(this.playBtn);
 
 		// full screen button
 		if (this.settings.display.fullScreenBtn) {
 			this.fullScreenBtn = document.createElement('button');
 			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
-			// this.fullScreenBtn.textContent = 'Full Screen';
+			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
 			this.fullScreenBtnImg = document.createElement('img');
 			this.fullScreenBtnImg.src = 'icons/fullscreen.svg';
 			this.fullScreenBtn.appendChild(this.fullScreenBtnImg);
-			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
 			this.rightToolbar.appendChild(this.fullScreenBtn);
 		}
 
@@ -131,13 +131,12 @@
 			this.progressBarContainer.addEventListener('click', this.progressBarInnerRender.bind(this));
 			this.container.appendChild(this.progressBarContainer);
 
-			this.progressBarInner = document.createElement('span');
-			this.progressBarInner.className = 'cinema-progress-bar-inner';
-
 			this.progressBarBuffer = document.createElement('span');
 			this.progressBarBuffer.className = 'cinema-progress-bar-buffer';
-
 			this.progressBarContainer.appendChild(this.progressBarBuffer);
+
+			this.progressBarInner = document.createElement('span');
+			this.progressBarInner.className = 'cinema-progress-bar-inner';
 			this.progressBarContainer.appendChild(this.progressBarInner);
 
 		}
@@ -161,7 +160,6 @@
 	 */
 	Cinema.prototype.play = function () {
 		this.media.play();
-		// this.playBtn.textContent = 'Pause';
 		this.playBtnImg.src = 'icons/pause.svg';
 		this.state.playing = true;
 	};
@@ -172,7 +170,6 @@
 	 */
 	Cinema.prototype.pause = function () {
 		this.media.pause();
-		// this.playBtn.textContent = 'Play';
 		this.playBtnImg.src = 'icons/play.svg';
 		this.state.playing = false;
 	};
@@ -203,7 +200,7 @@
 	};
 
 	/*
-	 * renders the elasped time dom element
+	 * renders elements that change while the media is playing
 	 * @public
 	 */
 	Cinema.prototype.playingRender = function () {
@@ -233,10 +230,19 @@
 	};
 
 	/*
-	 * renders the buffered time dom element
+	 * rerenders the progress bar when part of timeline is clicked
+	 * @public
+	 * @Param {Event}
+	 */
+	Cinema.prototype.progressBarInnerRender = function (e) {
+		this.media.currentTime = (e.offsetX / this.progressBarContainer.clientWidth) * this.media.duration;
+	};
+
+	/*
+	 * renders the buffered time progress bar
 	 * @public
 	 */
-	Cinema.prototype.progressRender = function () {
+	Cinema.prototype.bufferRender = function () {
 		if (this.settings.display.progressBar) {
 			var m = this.media;
 			for (var i = 0; i < m.buffered.length; i++) {
@@ -260,21 +266,12 @@
 	};
 
 	/*
-	 * renders the inner progress bar element
-	 * @public
-	 * @Param {Event}
-	 */
-	Cinema.prototype.progressBarInnerRender = function (e) {
-		this.media.currentTime = (e.offsetX / this.progressBarContainer.clientWidth) * this.media.duration;
-	};
-
-	/*
-	 * renders the duration time dom element
+	 * renders when media is played until end
 	 * @public
 	 */
 	Cinema.prototype.mediaEndRender = function () {
 		this.state.playing = false;
-		this.playBtn.textContent = 'Replay';
+		this.playBtnImg.src = 'icons/replay.svg';
 	};
 
 	/*
