@@ -294,6 +294,11 @@
 	 */
 	Cinema.prototype.volumeRender = function (e) {
 		var volume = e.target.value;
+		this.setVolume(volume);
+	};
+
+	Cinema.prototype.setVolume = function (volume) {
+		console.log(volume);;
 		this.media.volume = volume;
 		if (volume == 0) {
 			this.volumeBtnImg.style.width = '9px';
