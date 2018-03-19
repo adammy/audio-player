@@ -41,4 +41,18 @@
 			outline: none;
 		}
 	}
+	&-progress-bar {
+		&-container {
+			background: #ccc;
+			height: 5px;
+			position: relative;
+		}
+		&-inner {
+			background: #f00;
+			height: 5px;
+			display: block;
+			width: 0;
+			transition: 0.2s all ease;
+		}
+	}
 }

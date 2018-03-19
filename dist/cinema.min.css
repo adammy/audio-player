@@ -34,3 +34,15 @@
     background: #f00; }
   .cinema-btn:focus, .cinema-btn:active {
     outline: none; }
+
+.cinema-progress-bar-container {
+  background: #ccc;
+  height: 5px;
+  position: relative; }
+
+.cinema-progress-bar-inner {
+  background: #f00;
+  height: 5px;
+  display: block;
+  width: 0;
+  transition: 0.2s all ease; }

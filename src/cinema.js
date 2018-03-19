@@ -39,7 +39,7 @@
 
 		// media file
 		this.media.className = 'cinema-media';
-		this.media.addEventListener('timeupdate', this.renderTime.bind(this));
+		this.media.addEventListener('timeupdate', this.playingRender.bind(this));
 		this.media.addEventListener('ended', this.mediaEndRender.bind(this));
 
 		// container
@@ -88,11 +88,21 @@
 			this.timeContainer.appendChild(this.timeSeparatorSpan);
 
 			// get duration when ready
-			this.media.addEventListener('durationchange', this.renderDuration.bind(this));
+			this.media.addEventListener('durationchange', this.durationRender.bind(this));
 
 			// place overall element in toolbar
 			this.toolbar.appendChild(this.timeContainer);
 
+		}
+
+		// progress bar
+		if (this.settings.display.progressBar) {
+			this.progressBarContainer = document.createElement('div');
+			this.progressBarContainer.className = 'cinema-progress-bar-container';
+			this.progressBarInner = document.createElement('span');
+			this.progressBarInner.className = 'cinema-progress-bar-inner';
+			this.progressBarContainer.appendChild(this.progressBarInner);
+			this.container.appendChild(this.progressBarContainer);
 		}
 
 		// state initialization and autoplay if defined
@@ -141,15 +151,33 @@
 	 * renders the elasped time dom element
 	 * @public
 	 */
-	Cinema.prototype.renderTime = function () {
+	Cinema.prototype.playingRender = function () {
+
+		/*
+		 * @TODO
+		 * A consideration more than a thing that needs to happen
+		 * the 'timeupdate' event (referenced in the render() method) runs at a rate
+		 * that can make this functionality look buggy because:
+		 * - Doesn't run frequently enough
+		 * - Doesn't run at a consistent rate, e.g. sometimes it's a 0.5 seconds and sometimes it's 1.5 seconds
+		 * Alternative to consider is setInterval(); not as cool, but might look smoother
+		 * Also saw mention of window.requestAnimationFrame(); just look into it when this happens
+		 */
+
+		// progress bar
+		var percentageElapsed = (this.media.currentTime / this.media.duration) * 100;
+		this.progressBarInner.style.width = percentageElapsed + '%';
+
+		// time elapsed string
 		this.elapsedTimeSpan.textContent = secondsToString(this.media.currentTime);
+
 	};
 
 	/*
 	 * renders the duration time dom element
 	 * @public
 	 */
-	Cinema.prototype.renderDuration = function () {
+	Cinema.prototype.durationRender = function () {
 		this.durationSpan = document.createElement('span');
 		this.durationSpan.className = 'cinema-times-duration';
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
