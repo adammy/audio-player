@@ -39,7 +39,7 @@
   cursor: pointer;
   transition: 0.2s all ease; }
   .cinema-btn img {
-    width: 15px; }
+    width: 14px; }
   .cinema-btn:hover {
     background: rgba(0, 0, 0, 0.3);
     background: #f00; }
