@@ -40,6 +40,7 @@
 		// media file
 		this.media.className = 'cinema-media';
 		this.media.addEventListener('timeupdate', this.renderTime.bind(this));
+		this.media.addEventListener('ended', this.videoEndRender.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -55,7 +56,7 @@
 		// play button
 		this.playBtn = document.createElement('button');
 		this.playBtn.className = 'cinema-btn cinema-btn-play';
-		this.playBtn.addEventListener('click', this.play.bind(this));
+		this.playBtn.addEventListener('click', this.playPause.bind(this));
 		this.toolbar.appendChild(this.playBtn);
 
 		// full screen button
@@ -95,18 +96,36 @@
 		}
 
 		// state initialization and autoplay if defined
-		this.play();
+		this.playPause();
 
 	};
 
 	/*
-	 * play current song
+	 * play or pause media depending on state
+	 * @public
+	 */
+	Cinema.prototype.playPause = function () {
+		this.state.playing ? this.pause() : this.play();
+	};
+
+	/*
+	 * play media
 	 * @public
 	 */
 	Cinema.prototype.play = function () {
-		this.state.playing ? this.media.pause() : this.media.play();
-		this.playBtn.textContent = this.state.playing ? 'Play' : 'Pause';
-		this.state.playing = !this.state.playing;
+		this.media.play();
+		this.playBtn.textContent = 'Pause';
+		this.state.playing = true;
+	};
+
+	/*
+	 * pause media
+	 * @public
+	 */
+	Cinema.prototype.pause = function () {
+		this.media.pause();
+		this.playBtn.textContent = 'Play';
+		this.state.playing = false;
 	};
 
 	/*
@@ -135,6 +154,15 @@
 		this.durationSpan.className = 'cinema-times-duration';
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
 		this.timeContainer.appendChild(this.durationSpan);
+	};
+
+	/*
+	 * renders the duration time dom element
+	 * @public
+	 */
+	Cinema.prototype.videoEndRender = function () {
+		this.state.playing = false;
+		this.playBtn.textContent = 'Replay';
 	};
 
 	/*
