@@ -288,7 +288,7 @@
 	};
 
 	/*
-	 * renders the volume element
+	 * set the volume based on event provided
 	 * @public
 	 * @Param {Event}
 	 */
@@ -297,6 +297,11 @@
 		this.setVolume(volume);
 	};
 
+	/*
+	 * set volume of the media
+	 * @public
+	 * @Param {Number} - a number between 0 and 1 to set the volume to
+	 */
 	Cinema.prototype.setVolume = function (volume) {
 		console.log(volume);;
 		this.media.volume = volume;
