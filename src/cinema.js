@@ -18,7 +18,7 @@
 				volumeBar: true
 			},
 			animate: {
-				toolbar: false
+				toolbar: true
 			}
 		};
 
