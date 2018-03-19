@@ -18,7 +18,7 @@
 				volumeBar: true
 			},
 			animate: {
-				toolbar: true
+				toolbar: false
 			}
 		};
 
@@ -27,7 +27,8 @@
 		this.settings = extendDefaults(defaults, settings);
 		this.state = {
 			playing: !this.settings.autoplay,
-			fullScreen: false
+			fullScreen: false,
+			volume: 1
 		};
 
 		// render dom elements
@@ -85,17 +86,6 @@
 		this.playBtn.appendChild(this.playBtnImg);
 		this.leftToolbar.appendChild(this.playBtn);
 
-		// full screen button
-		if (this.settings.display.fullScreenBtn) {
-			this.fullScreenBtn = document.createElement('button');
-			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
-			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
-			this.fullScreenBtnImg = document.createElement('img');
-			this.fullScreenBtnImg.src = 'icons/fullscreen.svg';
-			this.fullScreenBtn.appendChild(this.fullScreenBtnImg);
-			this.rightToolbar.appendChild(this.fullScreenBtn);
-		}
-
 		// time elapsed / duration
 		if (this.settings.display.times) {
 
@@ -141,6 +131,47 @@
 
 		}
 
+		// volume bar
+		if (this.settings.display.volumeBar) {
+
+			this.volumeContainer = document.createElement('div');
+			this.volumeContainer.className = 'cinema-volume-container';
+			this.volumeContainer.addEventListener('mouseover', this.volumeMouseoverRender.bind(this));
+			this.volumeContainer.addEventListener('mouseout', this.volumeMouseoutRender.bind(this));
+			this.rightToolbar.appendChild(this.volumeContainer);
+
+			this.volumeBtn = document.createElement('button');
+			this.volumeBtn.className = 'cinema-btn cinema-btn-no-hover cinema-btn-volume';
+			this.volumeBtnImg = document.createElement('img');
+			this.volumeBtnImg.src = 'icons/volume-high.svg';
+			this.volumeBtn.appendChild(this.volumeBtnImg);
+			this.volumeContainer.appendChild(this.volumeBtn);
+
+			this.volumeRangeContainer = document.createElement('span');
+			this.volumeRangeContainer.className = 'cinema-volume-range';
+			this.volumeRange = document.createElement('input');
+			this.volumeRange.type = 'range';
+			this.volumeRange.max = 1;
+			this.volumeRange.min = 0;
+			this.volumeRange.step = 0.1;
+			this.volumeRange.addEventListener('change', this.volumeRender.bind(this));
+			this.volumeRangeContainer.appendChild(this.volumeRange);
+
+			this.volumeContainer.appendChild(this.volumeRangeContainer);
+
+		}
+
+		// full screen button
+		if (this.settings.display.fullScreenBtn) {
+			this.fullScreenBtn = document.createElement('button');
+			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
+			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
+			this.fullScreenBtnImg = document.createElement('img');
+			this.fullScreenBtnImg.src = 'icons/fullscreen.svg';
+			this.fullScreenBtn.appendChild(this.fullScreenBtnImg);
+			this.rightToolbar.appendChild(this.fullScreenBtn);
+		}
+
 		// state initialization and autoplay if defined
 		this.playPause();
 
@@ -172,15 +203,6 @@
 		this.media.pause();
 		this.playBtnImg.src = 'icons/play.svg';
 		this.state.playing = false;
-	};
-
-	/*
-	 * make video full screenish
-	 * @public
-	 */
-	Cinema.prototype.fullScreen = function () {
-		this.state.fullScreen ? this.container.classList.remove('cinema-fullscreen') : this.container.classList.add('cinema-fullscreen');
-		this.state.fullScreen = !this.state.fullScreen;
 	};
 
 	/*
@@ -263,6 +285,51 @@
 		this.durationSpan.className = 'cinema-times-duration';
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
 		this.timeContainer.appendChild(this.durationSpan);
+	};
+
+	/*
+	 * renders the volume element
+	 * @public
+	 * @Param {Event}
+	 */
+	Cinema.prototype.volumeRender = function (e) {
+		var volume = e.srcElement.value;
+		this.media.volume = volume;
+		if (volume == 0) {
+			this.volumeBtnImg.style.width = '9px';
+			this.volumeBtnImg.src = 'icons/volume-mute.svg';
+		} else if (volume >= 0.6) {
+			this.volumeBtnImg.style.width = '18px';
+			this.volumeBtnImg.src = 'icons/volume-high.svg';
+		} else {
+			this.volumeBtnImg.style.width = '13px';
+			this.volumeBtnImg.src = 'icons/volume-low.svg';
+		}
+	};
+
+	/*
+	 * volume container mouseover, edit dom
+	 * @public
+	 */
+	Cinema.prototype.volumeMouseoverRender = function () {
+		this.volumeRangeContainer.classList.add('cinema-volume-range-active');
+	};
+
+	/*
+	 * volume container mouseover, edit dom
+	 * @public
+	 */
+	Cinema.prototype.volumeMouseoutRender = function () {
+		this.volumeRangeContainer.classList.remove('cinema-volume-range-active');
+	};
+
+	/*
+	 * make video full screenish
+	 * @public
+	 */
+	Cinema.prototype.fullScreen = function () {
+		this.state.fullScreen ? this.container.classList.remove('cinema-fullscreen') : this.container.classList.add('cinema-fullscreen');
+		this.state.fullScreen = !this.state.fullScreen;
 	};
 
 	/*
