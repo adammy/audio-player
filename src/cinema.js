@@ -154,6 +154,7 @@
 			this.volumeRange.max = 1;
 			this.volumeRange.min = 0;
 			this.volumeRange.step = 0.1;
+			this.volumeRange.value = this.settings.volume;
 			this.volumeRange.addEventListener('change', this.setVolumeFromInput.bind(this));
 			this.volumeRangeContainer.appendChild(this.volumeRange);
 
