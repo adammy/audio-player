@@ -40,7 +40,7 @@
 		// media file
 		this.media.className = 'cinema-media';
 		this.media.addEventListener('timeupdate', this.renderTime.bind(this));
-		this.media.addEventListener('ended', this.videoEndRender.bind(this));
+		this.media.addEventListener('ended', this.mediaEndRender.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -160,7 +160,7 @@
 	 * renders the duration time dom element
 	 * @public
 	 */
-	Cinema.prototype.videoEndRender = function () {
+	Cinema.prototype.mediaEndRender = function () {
 		this.state.playing = false;
 		this.playBtn.textContent = 'Replay';
 	};
