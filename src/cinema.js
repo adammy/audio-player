@@ -154,7 +154,7 @@
 			this.volumeRange.max = 1;
 			this.volumeRange.min = 0;
 			this.volumeRange.step = 0.1;
-			this.volumeRange.addEventListener('change', this.volumeRender.bind(this));
+			this.volumeRange.addEventListener('change', this.setVolumeFromInput.bind(this));
 			this.volumeRangeContainer.appendChild(this.volumeRange);
 
 			this.volumeContainer.appendChild(this.volumeRangeContainer);
@@ -292,7 +292,7 @@
 	 * @public
 	 * @Param {Event}
 	 */
-	Cinema.prototype.volumeRender = function (e) {
+	Cinema.prototype.setVolumeFromInput = function (e) {
 		var volume = e.target.value;
 		this.setVolume(volume);
 	};
