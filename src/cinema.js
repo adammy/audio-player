@@ -219,11 +219,15 @@
 		 */
 
 		// progress bar
-		var percentageElapsed = (this.media.currentTime / this.media.duration) * 100;
-		this.progressBarInner.style.width = percentageElapsed + '%';
+		if (this.settings.display.progressBar) {
+			var percentageElapsed = (this.media.currentTime / this.media.duration) * 100;
+			this.progressBarInner.style.width = percentageElapsed + '%';
+		}
 
 		// time elapsed string
-		this.elapsedTimeSpan.textContent = secondsToString(this.media.currentTime);
+		if (this.settings.display.times) {
+			this.elapsedTimeSpan.textContent = secondsToString(this.media.currentTime);
+		}
 
 	};
 
@@ -232,11 +236,13 @@
 	 * @public
 	 */
 	Cinema.prototype.progressRender = function () {
-		var m = this.media;
-		for (var i = 0; i < m.buffered.length; i++) {
-			if (m.buffered.start(m.buffered.length - 1 - i) < m.currentTime) {
-				this.progressBarBuffer.style.width = (m.buffered.end(m.buffered.length - 1 - i) / m.duration) * 100 + '%';
-				break;
+		if (this.settings.display.progressBar) {
+			var m = this.media;
+			for (var i = 0; i < m.buffered.length; i++) {
+				if (m.buffered.start(m.buffered.length - 1 - i) < m.currentTime) {
+					this.progressBarBuffer.style.width = (m.buffered.end(m.buffered.length - 1 - i) / m.duration) * 100 + '%';
+					break;
+				}
 			}
 		}
 	};
