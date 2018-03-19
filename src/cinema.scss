@@ -23,8 +23,14 @@
 		color: #fff;
 		width: 100%;
 		position: absolute;
-		bottom: 0;
+		bottom: 5px;
 		left: 0;
+		&-left {
+			float: left;
+		}
+		&-right {
+			float: right;
+		}
 	}
 	&-btn {
 		background: transparent;
@@ -33,6 +39,9 @@
 		padding: 0.5em 1em;
 		cursor: pointer;
 		transition: 0.2s all ease;
+		img {
+			width: 15px;
+		}
 		&:hover {
 			background: rgba(0, 0, 0, 0.3);
 			background: #f00;
@@ -40,12 +49,16 @@
 		&:focus, &:active {
 			outline: none;
 		}
+		&-fullscreen {
+			img {
+				width: 18px;
+			}
+		}
 	}
 	&-progress-bar {
 		&-container {
 			background: #ccc;
 			height: 5px;
-			position: relative;
 		}
 		&-inner {
 			background: #f00;
@@ -54,5 +67,17 @@
 			width: 0;
 			transition: 0.2s all ease;
 		}
+		&-buffer {
+			background: #aaa;
+			height: 5px;
+			display: block;
+			width: 0;
+			transition: 0.2s all ease;
+		}
+	}
+	&-times {
+		color: #ddd;
+		font-size: 14px;
+		padding: 0 0.5em;
 	}
 }

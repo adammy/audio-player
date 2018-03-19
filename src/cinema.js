@@ -53,19 +53,34 @@
 		this.toolbar.className = 'cinema-toolbar';
 		this.container.appendChild(this.toolbar);
 
+		// left toolbar
+		this.leftToolbar = document.createElement('div');
+		this.leftToolbar.className = 'cinema-toolbar-left';
+		this.toolbar.appendChild(this.leftToolbar);
+
+		// right toolbar
+		this.rightToolbar = document.createElement('div');
+		this.rightToolbar.className = 'cinema-toolbar-right';
+		this.toolbar.appendChild(this.rightToolbar);
+
 		// play button
 		this.playBtn = document.createElement('button');
 		this.playBtn.className = 'cinema-btn cinema-btn-play';
+		this.playBtnImg = document.createElement('img');
+		this.playBtn.appendChild(this.playBtnImg);
 		this.playBtn.addEventListener('click', this.playPause.bind(this));
-		this.toolbar.appendChild(this.playBtn);
+		this.leftToolbar.appendChild(this.playBtn);
 
 		// full screen button
 		if (this.settings.display.fullScreenBtn) {
 			this.fullScreenBtn = document.createElement('button');
 			this.fullScreenBtn.className = 'cinema-btn cinema-btn-fullscreen';
-			this.fullScreenBtn.textContent = 'Full Screen';
-			this.toolbar.appendChild(this.fullScreenBtn);
+			// this.fullScreenBtn.textContent = 'Full Screen';
+			this.fullScreenBtnImg = document.createElement('img');
+			this.fullScreenBtnImg.src = 'icons/fullscreen.svg';
+			this.fullScreenBtn.appendChild(this.fullScreenBtnImg);
 			this.fullScreenBtn.addEventListener('click', this.fullScreen.bind(this));
+			this.rightToolbar.appendChild(this.fullScreenBtn);
 		}
 
 		// time elapsed / duration
@@ -91,7 +106,7 @@
 			this.media.addEventListener('durationchange', this.durationRender.bind(this));
 
 			// place overall element in toolbar
-			this.toolbar.appendChild(this.timeContainer);
+			this.leftToolbar.appendChild(this.timeContainer);
 
 		}
 
@@ -125,7 +140,8 @@
 	 */
 	Cinema.prototype.play = function () {
 		this.media.play();
-		this.playBtn.textContent = 'Pause';
+		// this.playBtn.textContent = 'Pause';
+		this.playBtnImg.src = 'icons/pause.svg';
 		this.state.playing = true;
 	};
 
@@ -135,7 +151,8 @@
 	 */
 	Cinema.prototype.pause = function () {
 		this.media.pause();
-		this.playBtn.textContent = 'Play';
+		// this.playBtn.textContent = 'Play';
+		this.playBtnImg.src = 'icons/play.svg';
 		this.state.playing = false;
 	};
 

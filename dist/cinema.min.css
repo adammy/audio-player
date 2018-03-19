@@ -19,8 +19,12 @@
   color: #fff;
   width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   left: 0; }
+  .cinema-toolbar-left {
+    float: left; }
+  .cinema-toolbar-right {
+    float: right; }
 
 .cinema-btn {
   background: transparent;
@@ -29,16 +33,19 @@
   padding: 0.5em 1em;
   cursor: pointer;
   transition: 0.2s all ease; }
+  .cinema-btn img {
+    width: 15px; }
   .cinema-btn:hover {
     background: rgba(0, 0, 0, 0.3);
     background: #f00; }
   .cinema-btn:focus, .cinema-btn:active {
     outline: none; }
+  .cinema-btn-fullscreen img {
+    width: 18px; }
 
 .cinema-progress-bar-container {
   background: #ccc;
-  height: 5px;
-  position: relative; }
+  height: 5px; }
 
 .cinema-progress-bar-inner {
   background: #f00;
@@ -46,3 +53,15 @@
   display: block;
   width: 0;
   transition: 0.2s all ease; }
+
+.cinema-progress-bar-buffer {
+  background: #aaa;
+  height: 5px;
+  display: block;
+  width: 0;
+  transition: 0.2s all ease; }
+
+.cinema-times {
+  color: #ddd;
+  font-size: 14px;
+  padding: 0 0.5em; }
