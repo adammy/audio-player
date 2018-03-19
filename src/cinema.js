@@ -11,6 +11,7 @@
 		// default settings
 		var defaults = {
 			autoplay: false,
+			volume: 1,
 			display: {
 				fullScreenBtn: true,
 				times: true,
@@ -27,8 +28,7 @@
 		this.settings = extendDefaults(defaults, settings);
 		this.state = {
 			playing: !this.settings.autoplay,
-			fullScreen: false,
-			volume: 1
+			fullScreen: false
 		};
 
 		// render dom elements
@@ -172,7 +172,8 @@
 			this.rightToolbar.appendChild(this.fullScreenBtn);
 		}
 
-		// state initialization and autoplay if defined
+		// state initialization
+		this.setVolume(this.settings.volume);
 		this.playPause();
 
 	};
@@ -303,7 +304,6 @@
 	 * @Param {Number} - a number between 0 and 1 to set the volume to
 	 */
 	Cinema.prototype.setVolume = function (volume) {
-		console.log(volume);;
 		this.media.volume = volume;
 		if (volume == 0) {
 			this.volumeBtnImg.style.width = '9px';
