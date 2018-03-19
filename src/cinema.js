@@ -47,6 +47,8 @@
 		this.container.className = 'cinema-container';
 		this.media.parentNode.insertBefore(this.container, this.media.nextSibling);
 		this.container.appendChild(this.media);
+		this.container.addEventListener('mouseover', this.mediaMouseoverRender.bind(this));
+		this.container.addEventListener('mouseout', this.mediaMouseoutRender.bind(this));
 
 		// toolbar
 		this.toolbar = document.createElement('div');
@@ -163,6 +165,22 @@
 	Cinema.prototype.fullScreen = function () {
 		this.state.fullScreen ? this.container.classList.remove('cinema-fullscreen') : this.container.classList.add('cinema-fullscreen');
 		this.state.fullScreen = !this.state.fullScreen;
+	};
+
+	/*
+	 * renders on mouseover of media
+	 * @public
+	 */
+	Cinema.prototype.mediaMouseoverRender = function () {
+		this.toolbar.classList.add('cinema-toolbar-active');
+	};
+
+	/*
+	 * renders on mouseout of media
+	 * @public
+	 */
+	Cinema.prototype.mediaMouseoutRender = function () {
+		this.toolbar.classList.remove('cinema-toolbar-active');
 	};
 
 	/*
