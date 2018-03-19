@@ -43,6 +43,7 @@
 
 		// media file
 		this.media.className = 'cinema-media';
+		this.media.addEventListener('click', this.playPause.bind(this));
 		this.media.addEventListener('timeupdate', this.playingRender.bind(this));
 		this.media.addEventListener('ended', this.mediaEndRender.bind(this));
 		this.media.addEventListener('progress', this.progressRender.bind(this));
