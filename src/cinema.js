@@ -293,7 +293,7 @@
 	 * @Param {Event}
 	 */
 	Cinema.prototype.volumeRender = function (e) {
-		var volume = e.srcElement.value;
+		var volume = e.target.value;
 		this.media.volume = volume;
 		if (volume == 0) {
 			this.volumeBtnImg.style.width = '9px';
