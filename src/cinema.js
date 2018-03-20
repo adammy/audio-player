@@ -1,6 +1,24 @@
 (function () {
 
 	/*
+	 * instantiator
+	 * @public
+	 * @param {String} - a selector of elements you want to use to create Cinema objects
+	 * @returns {Cinema}
+	 */
+	this.CinemaInit = function (selector) {
+		var elements = document.querySelectorAll(selector);
+		elements.forEach(function (element) {
+			if (element.tagName.toLowerCase() == 'video' || element.tagName.toLowerCase() == 'audio') {
+				return new Cinema(element);
+			} else {
+				console.warn('You tried to create a Cinema object with something other than a <video> or <audio> element. The specific element is logged below:');
+				console.warn(element);
+			}
+		});
+	};
+
+	/*
 	 * constructor
 	 * @public
 	 * @param {Element} media - the media element that is being manipulated

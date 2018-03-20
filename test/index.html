@@ -10,15 +10,20 @@
 <body>
 
 	<div style="width: 800px; margin: 4em auto;">
-		<video id="video" preload="metadata">
+		<video id="video" class="video" preload="metadata">
+			<source src="video/bunny.mp4" type="video/mp4">
+		</video>
+	</div>
+
+	<div style="width: 800px; margin: 4em auto;">
+		<video class="video" preload="metadata">
 			<source src="video/oceans.mp4" type="video/mp4">
 		</video>
 	</div>
 
 	<script src="cinema.js"></script>
 	<script>
-		var video = document.getElementById('video');
-		var cinema = new Cinema(video);
+		CinemaInit('.video');
 	</script>
 
 </body>
