@@ -403,7 +403,11 @@
 	function extendDefaults(source, properties) {
 		for (property in properties) {
 			if (properties.hasOwnProperty(property)) {
-				source[property] = properties[property];
+				if (typeof properties[property] === 'object') {
+					source[property] = extendDefaults(source[property], properties[property]);
+				} else {
+					source[property] = properties[property];
+				}
 			}
 		}
 		return source;
