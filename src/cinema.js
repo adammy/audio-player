@@ -65,9 +65,9 @@
 		// media file
 		this.media.className = 'cinema-media';
 		this.media.addEventListener('click', this.playPause.bind(this));
-		this.media.addEventListener('timeupdate', this.playingRender.bind(this));
-		this.media.addEventListener('ended', this.mediaEndRender.bind(this));
-		this.media.addEventListener('progress', this.bufferRender.bind(this));
+		this.media.addEventListener('timeupdate', this.mediaPlaying.bind(this));
+		this.media.addEventListener('ended', this.mediaEndUpdate.bind(this));
+		this.media.addEventListener('progress', this.bufferUpdate.bind(this));
 
 		// container
 		this.container = document.createElement('div');
@@ -75,8 +75,8 @@
 		this.media.parentNode.insertBefore(this.container, this.media.nextSibling);
 		this.container.appendChild(this.media);
 		if (this.settings.animate.toolbar) {
-			this.container.addEventListener('mouseover', this.mediaMouseoverRender.bind(this));
-			this.container.addEventListener('mouseout', this.mediaMouseoutRender.bind(this));
+			this.container.addEventListener('mouseover', this.mediaMouseover.bind(this));
+			this.container.addEventListener('mouseout', this.mediaMouseout.bind(this));
 		}
 
 		// toolbar
@@ -125,7 +125,7 @@
 			this.timeContainer.appendChild(this.timeSeparatorSpan);
 
 			// get duration when ready
-			this.media.addEventListener('durationchange', this.durationRender.bind(this));
+			this.media.addEventListener('durationchange', this.durationUpdate.bind(this));
 
 			// place overall element in toolbar
 			this.leftToolbar.appendChild(this.timeContainer);
@@ -137,7 +137,7 @@
 
 			this.progressBarContainer = document.createElement('div');
 			this.progressBarContainer.className = 'cinema-progress-bar-container';
-			this.progressBarContainer.addEventListener('click', this.progressBarInnerRender.bind(this));
+			this.progressBarContainer.addEventListener('click', this.progressBarUpdate.bind(this));
 			this.container.appendChild(this.progressBarContainer);
 
 			this.progressBarBuffer = document.createElement('span');
@@ -156,8 +156,8 @@
 			this.volumeContainer = document.createElement('div');
 			this.volumeContainer.className = 'cinema-volume-container';
 			if (this.settings.animate.volumeBar) {
-				this.volumeContainer.addEventListener('mouseover', this.volumeMouseoverRender.bind(this));
-				this.volumeContainer.addEventListener('mouseout', this.volumeMouseoutRender.bind(this));
+				this.volumeContainer.addEventListener('mouseover', this.volumeMouseover.bind(this));
+				this.volumeContainer.addEventListener('mouseout', this.volumeMouseout.bind(this));
 			}
 			this.rightToolbar.appendChild(this.volumeContainer);
 
@@ -232,26 +232,26 @@
 	};
 
 	/*
-	 * renders on mouseover of media
+	 * actions on mouseover of media
 	 * @public
 	 */
-	Cinema.prototype.mediaMouseoverRender = function () {
+	Cinema.prototype.mediaMouseover = function () {
 		this.toolbar.classList.add('cinema-toolbar-active');
 	};
 
 	/*
-	 * renders on mouseout of media
+	 * actions on mouseover of media
 	 * @public
 	 */
-	Cinema.prototype.mediaMouseoutRender = function () {
+	Cinema.prototype.mediaMouseout = function () {
 		this.toolbar.classList.remove('cinema-toolbar-active');
 	};
 
 	/*
-	 * renders elements that change while the media is playing
+	 * actions while media is playing
 	 * @public
 	 */
-	Cinema.prototype.playingRender = function () {
+	Cinema.prototype.mediaPlaying = function () {
 
 		/*
 		 * @TODO
@@ -282,7 +282,7 @@
 	 * @public
 	 * @Param {Event}
 	 */
-	Cinema.prototype.progressBarInnerRender = function (e) {
+	Cinema.prototype.progressBarUpdate = function (e) {
 		this.media.currentTime = (e.offsetX / this.progressBarContainer.clientWidth) * this.media.duration;
 	};
 
@@ -290,7 +290,7 @@
 	 * renders the buffered time progress bar
 	 * @public
 	 */
-	Cinema.prototype.bufferRender = function () {
+	Cinema.prototype.bufferUpdate = function () {
 		if (this.settings.display.progressBar) {
 			var m = this.media;
 			for (var i = 0; i < m.buffered.length; i++) {
@@ -306,7 +306,7 @@
 	 * renders the duration time dom element
 	 * @public
 	 */
-	Cinema.prototype.durationRender = function () {
+	Cinema.prototype.durationUpdate = function () {
 		this.durationSpan = document.createElement('span');
 		this.durationSpan.className = 'cinema-times-duration';
 		this.durationSpan.textContent = secondsToString(this.media.duration) || 'Not Applicable';
@@ -346,7 +346,7 @@
 	 * volume container mouseover, edit dom
 	 * @public
 	 */
-	Cinema.prototype.volumeMouseoverRender = function () {
+	Cinema.prototype.volumeMouseover = function () {
 		this.volumeRangeContainer.classList.add('cinema-volume-range-active');
 	};
 
@@ -354,7 +354,7 @@
 	 * volume container mouseover, edit dom
 	 * @public
 	 */
-	Cinema.prototype.volumeMouseoutRender = function () {
+	Cinema.prototype.volumeMouseout = function () {
 		this.volumeRangeContainer.classList.remove('cinema-volume-range-active');
 	};
 
@@ -371,7 +371,7 @@
 	 * renders when media is played until end
 	 * @public
 	 */
-	Cinema.prototype.mediaEndRender = function () {
+	Cinema.prototype.mediaEndUpdate = function () {
 		this.state.playing = false;
 		this.playBtnImg.src = 'icons/replay.svg';
 	};
